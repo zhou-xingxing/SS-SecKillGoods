@@ -1,0 +1,24 @@
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            {{range .treeMenus}}
+                <li>
+                    <a href="javascript:;">
+                        <i class="iconfont left-nav-li" lay-tips="{{.Name}}">{{str2html .Icon}}</i>
+                        <cite>{{.Name}}</cite>
+                        <i class="iconfont nav_right">&#xe697;</i></a>
+
+                    <ul class="sub-menu">
+                        {{range $elem := .Children}}
+                            <li>
+                                <a onclick="xadmin.add_tab('{{$elem.Name}}','{{$elem.SkipUrl}}')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>{{$elem.Name}}</cite></a>
+                            </li>
+                        {{end}}
+                    </ul>
+                </li>
+            {{end}}
+        </ul>
+    </div>
+</div>

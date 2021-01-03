@@ -1,0 +1,118 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <blockquote class="layui-elem-quote">欢迎管理员：
+                        <span class="x-red">{{.adminUser.Username}}</span>！当前时间:{{.nowTime}}
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">数据统计</div>
+                <div class="layui-card-body ">
+                    <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>管理员数</h3>
+                                <p>
+                                    <cite>{{.adminCount}}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>总访问数</h3>
+                                <p>
+                                    <cite>{{.visitCount}}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>年访问数</h3>
+                                <p>
+                                    <cite>{{.yestVisitCount}}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>月访问数</h3>
+                                <p>
+                                    <cite>{{.monthVisitCount}}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>日访问数</h3>
+                                <p>
+                                    <cite>{{.dayVisitCount}}</cite></p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                        <tr>
+                            <th>项目名称</th>
+                            <td>{{.appName}}</td>
+                        </tr>
+                        <tr>
+                            <th>网站地址</th>
+                            <td>{{.siteUrl}}</td>
+                        </tr>
+                        <tr>
+                            <th>beego版本</th>
+                            <td>{{.frameVersion}}</td>
+                        </tr>
+                        <tr>
+                            <th>项目目录</th>
+                            <td>{{.getwd}}</td>
+                        </tr>
+                        <tr>
+                            <th>服务器类型</th>
+                            <td>{{.sysName}}</td>
+                        </tr>
+                        <tr>
+                            <th>系统架构</th>
+                            <td>{{.goArch}}</td>
+                        </tr>
+                        <tr>
+                            <th>GO版本</th>
+                            <td>{{.sysVersion}}</td>
+                        </tr>
+                        <tr>
+                            <th>GO应用路径</th>
+                            <td>{{.goRoot}}</td>
+                        </tr>
+                        <tr>
+                            <th>MYSQL版本</th>
+                            <td>{{.mysqlVersion}}</td>
+                        </tr>
+                        <tr>
+                            <th>cpu数</th>
+                            <td>{{.cpuNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>硬盘容量</th>
+                            <td>剩余：{{.diskFree}}GB &nbsp;&nbsp;&nbsp;&nbsp; 总计：{{.diskAll}}GB</td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <style id="welcome_style"></style>
+        <div class="layui-col-md12">
+            <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,x-admin提供技术支持。</blockquote></div>
+    </div>
+</div>
+</div>
