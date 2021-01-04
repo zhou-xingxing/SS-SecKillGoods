@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//日志模型
 type AdminLog struct {
 	Id          int
 	AdminUserId int

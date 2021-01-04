@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	//root 123456
+	//root 123456 1d556689c428b9bb2c19bf6eac9cfdbd
 	//开启session
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	//初始化数据库

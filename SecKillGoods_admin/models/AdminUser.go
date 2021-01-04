@@ -13,9 +13,9 @@ type AdminUser struct {
 	Id       int
 	Username string `orm:"unique"`
 	Password string
-	Phone    string `orm:"null"`
-	Email    string `orm:"null"`
-	Status   uint8  `orm:"default(1);description(这是状态字段)"`
+	Phone    string
+	Email    string
+	Status   uint8 `orm:"default(1);description(这是状态字段)"`
 	RoleId   int
 }
 

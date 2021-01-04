@@ -3,6 +3,7 @@ package controllers
 import (
 	"SecKillGoods_admin/models"
 	beego "github.com/beego/beego/v2/server/web"
+	"strings"
 )
 
 type BaseController struct {
@@ -42,4 +43,26 @@ func (c *BaseController) RefreshAdminUserSession(user *models.AdminUser) {
 	//保存信息到Session
 	c.SetSession("admin_user", user)
 
+}
+
+// 设置模板
+// 第一个参数模板，第二个参数为layout
+func (c *BaseController) SetTpl(template ...string) {
+	var tplName string
+	layout := "common/admin_layout.html"
+	switch {
+	case len(template) == 1:
+		tplName = template[0]
+	case len(template) == 2:
+		tplName = template[0]
+		layout = template[1]
+	default:
+		//不要Controller这个10个字母
+		ctrlName := strings.ToLower(c.controllerName[0 : len(c.controllerName)-10])
+		actionName := strings.ToLower(c.actionName)
+		tplName = ctrlName + "/" + actionName + ".html"
+	}
+
+	c.Layout = layout
+	c.TplName = tplName
 }

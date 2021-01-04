@@ -53,6 +53,48 @@ func (c *IndexController) Login() {
 	c.TplName = "index/login.html"
 }
 
+func (c *IndexController) DoLogin() {
+	username := c.GetString("username")
+	password := c.GetString("password")
+	//验证参数
+	pat1 := `^[a-zA-Z0-9_]{4,12}$`
+	pat2 := `^[a-zA-Z0-9_]{6,12}$`
+	match1, _ := regexp.MatchString(pat1, username)
+	match2, _ := regexp.MatchString(pat2, password)
+	if !match1 {
+		c.ApiError("用户名不符合规则", nil)
+	}
+	if !match2 {
+		c.ApiError("密码不符合规则", nil)
+	}
+
+	//加密密码且加盐
+	salt, _ := beego.AppConfig.String("pwd_salt")
+	password = utils.Md5Encode(password + salt)
+	adminUser, err := models.AdminUserGetUserOneByNameAndPwd(username, password)
+
+	log.Print(username, password)
+	if err != nil {
+		c.ApiError("用户名或者密码错误", nil)
+	}
+	if adminUser.Status == 0 {
+		c.ApiError("用户被禁用，请联系管理员", nil)
+	}
+	//保存信息到Session
+	c.RefreshAdminUserSession(adminUser)
+
+	c.ApiSuccess("登录成功", nil)
+}
+
+//退出登录
+func (c *IndexController) Logout() {
+	//清除cookie和session
+	_ = c.DestroySession()
+	c.Ctx.SetCookie("beegosessionID", "")
+	c.Redirect("/admin/login", 302)
+}
+
+//欢迎页面
 func (c *IndexController) Welcome() {
 	//数据统计
 	o := orm.NewOrm()
@@ -83,46 +125,51 @@ func (c *IndexController) Welcome() {
 	c.Data["goArch"] = runtime.GOARCH         //系统构架
 	c.Data["sysVersion"] = runtime.Version()  //go版本
 
-	c.TplName = "index/welcome.html"
+	//c.TplName = "index/welcome.html"
+	c.SetTpl("index/welcome.html")
 }
 
-func (c *IndexController) DoLogin() {
-	username := c.GetString("username")
-	password := c.GetString("password")
-	//验证参数
-	pat1 := `^[a-zA-Z0-9_]{4,12}$`
-	pat2 := `^[a-zA-Z0-9_]{6,12}$`
-	match1, _ := regexp.MatchString(pat1, username)
-	match2, _ := regexp.MatchString(pat2, password)
-	if !match1 {
-		c.ApiError("用户名不符合规则", nil)
-	}
-	if !match2 {
-		c.ApiError("密码不符合规则", nil)
-	}
+//个人中心
+func (c *IndexController) Person() {
+	if c.IsAjax() {
+		//修改个人中心
+		var adminUser models.AdminUser
+		_ = c.Ctx.Input.Bind(&adminUser.Id, "id")
 
-	//加密密码且加盐
-	salt, _ := beego.AppConfig.String("pwd_salt")
-	password = utils.Md5Encode(password + salt)
-	adminUser, err := models.AdminUserGetUserOneByNameAndPwd(username, password)
-	//1d556689c428b9bb2c19bf6eac9cfdbd
-	log.Print(username, password)
-	if err != nil {
-		c.ApiError("用户名或者密码错误", nil)
-	}
-	if adminUser.Status == 0 {
-		c.ApiError("用户被禁用，请联系管理员", nil)
-	}
-	//保存信息到Session
-	c.RefreshAdminUserSession(adminUser)
+		o := orm.NewOrm()
+		err := o.Read(&adminUser)
+		log.Print("修改前", adminUser)
+		if err != nil {
+			c.ApiError("查询失败", nil)
+		}
 
-	c.ApiSuccess("登录成功", nil)
-}
-
-//退出登录
-func (c *IndexController) Logout() {
-	//清除cookie和session
-	_ = c.DestroySession()
-	c.Ctx.SetCookie("beegosessionID", "")
-	c.Redirect("/admin/login", 302)
+		_ = c.Ctx.Input.Bind(&adminUser.Phone, "phone")
+		_ = c.Ctx.Input.Bind(&adminUser.Email, "email")
+		pwd := c.GetString("pwd", "")
+		//密码为空说明没有修改密码
+		if pwd != "" {
+			repwd := c.GetString("repwd")
+			pat2 := `^[a-zA-Z0-9_]{6,12}$`
+			match2, _ := regexp.MatchString(pat2, pwd)
+			if !match2 {
+				c.ApiError("密码不符合规则", nil)
+			}
+			if pwd != repwd {
+				c.ApiError("两次密码不一致", nil)
+			}
+			salt, _ := beego.AppConfig.String("pwd_salt")
+			adminUser.Password = utils.Md5Encode(pwd + salt)
+		}
+		_, err = o.Update(&adminUser)
+		if err != nil {
+			c.ApiError(err.Error(), nil)
+		}
+		log.Println("修改后", adminUser)
+		//更新Session
+		c.RefreshAdminUserSession(&adminUser)
+		c.ApiSuccess("更新成功", nil)
+	}
+	adminUser := c.GetSession("admin_user")
+	c.Data["adminUser"] = adminUser
+	c.SetTpl("index/person.html")
 }

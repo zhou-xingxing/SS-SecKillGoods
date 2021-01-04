@@ -1,0 +1,101 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <input type="hidden" name="id" value="{{.adminUser.Id}}">
+            <div class="layui-form-item">
+                <label for="username" class="layui-form-label">
+                    用户名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="username" name="username" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input layui-disabled" value="{{.adminUser.Username}}" disabled>
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">
+                    手机
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="phone" name="phone" required="" lay-verify="phone"
+                           autocomplete="off" class="layui-input" value="{{.adminUser.Phone}}">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+                    邮箱
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                           autocomplete="off" class="layui-input" value="{{.adminUser.Email}}">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_pass" class="layui-form-label">
+                    密码
+                </label>
+                <div class="layui-input-inline">
+                    <input type="password" placeholder="不修改密码请留空" id="L_pass" name="pwd" required="" lay-verify=""
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    6到12个字符，只能包含字母、数字、下划线
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">
+                    确认密码
+                </label>
+                <div class="layui-input-inline">
+                    <input type="password" id="L_repass" name="repwd" required="" lay-verify=""
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    更新
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer','upload'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer,xnn
+                upload = layui.upload;
+            //自定义验证规则
+            form.verify({
+
+            });
+            //监听提交
+            form.on('submit(add)',
+                function(data) {
+                    request_post("/admin/person",data.field).then(function (data) {
+                        layer.alert("更新成功", {
+                                icon: 6
+                            },
+                            function() {
+                                //关闭当前frame
+                                xadmin.close();
+                                // 可以对父窗口进行刷新
+                                xadmin.father_reload();
+                            });
+                    },function (error) {
+                        msg_error(error.msg)
+                    })
+                    return false;
+                });
+        });</script>
