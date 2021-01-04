@@ -16,7 +16,7 @@ type AdminUser struct {
 	Phone    string `orm:"null"`
 	Email    string `orm:"null"`
 	Status   uint8  `orm:"default(1);description(这是状态字段)"`
-	RoleId   int    `orm:"null"`
+	RoleId   int
 }
 
 //根据用户名和密码获取单条数据

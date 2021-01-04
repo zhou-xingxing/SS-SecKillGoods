@@ -3,9 +3,12 @@ package controllers
 import (
 	"SecKillGoods_admin/models"
 	"SecKillGoods_admin/utils"
+	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"log"
 	"regexp"
+	"runtime"
+	"time"
 )
 
 type IndexController struct {
@@ -51,6 +54,35 @@ func (c *IndexController) Login() {
 }
 
 func (c *IndexController) Welcome() {
+	//数据统计
+	o := orm.NewOrm()
+	//访问数
+	var maps []orm.Params
+	num, err := o.Raw(`SELECT
+			count(id) as sum_visit_count,
+			count(IF(DATE_FORMAT(created_time, '%Y')=DATE_FORMAT(CURDATE(),'%Y'),true,null)) as year_visit_count,
+			count(IF(DATE_FORMAT(created_time, '%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m'),true,null)) as month_visit_count,
+			count(IF(DATE_FORMAT(created_time, '%Y%m%d')=DATE_FORMAT(CURDATE(),'%Y%m%d'),true,null)) as day_visit_count
+		FROM admin_log `).Values(&maps)
+
+	if err == nil && num > 0 {
+		c.Data["visitCount"], _ = maps[0]["sum_visit_count"]        //总访问数
+		c.Data["yestVisitCount"], _ = maps[0]["year_visit_count"]   //年访问数
+		c.Data["monthVisitCount"], _ = maps[0]["month_visit_count"] //月访问数
+		c.Data["dayVisitCount"], _ = maps[0]["day_visit_count"]     //日访问数
+	} else {
+		log.Println(err, num)
+	}
+
+	c.Data["adminCount"], _ = o.QueryTable(new(models.AdminUser)).Count() //管理员数
+	c.Data["adminUser"] = c.GetSession("admin_user")
+	c.Data["nowTime"] = utils.GetDateByTime(time.Now().Unix())
+	//获取系统信息
+	c.Data["appName"] = beego.BConfig.AppName //项目名称
+	c.Data["sysName"] = runtime.GOOS          //操作系统
+	c.Data["goArch"] = runtime.GOARCH         //系统构架
+	c.Data["sysVersion"] = runtime.Version()  //go版本
+
 	c.TplName = "index/welcome.html"
 }
 
@@ -73,6 +105,7 @@ func (c *IndexController) DoLogin() {
 	salt, _ := beego.AppConfig.String("pwd_salt")
 	password = utils.Md5Encode(password + salt)
 	adminUser, err := models.AdminUserGetUserOneByNameAndPwd(username, password)
+	//1d556689c428b9bb2c19bf6eac9cfdbd
 	log.Print(username, password)
 	if err != nil {
 		c.ApiError("用户名或者密码错误", nil)

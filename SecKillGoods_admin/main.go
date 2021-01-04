@@ -16,9 +16,12 @@ func main() {
 	sysinit.InitDatabase()
 	//建表用的
 	//orm.RunCommand()
+	//main orm syncdb -force=false: drop tables before create
 
 	//过滤器，验证是否登录
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterLogin)
-
+	////过滤器：加日志
+	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterAddLog)
+	//
 	beego.Run()
 }

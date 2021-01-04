@@ -28,7 +28,7 @@ func InitDatabase() {
 	if err != nil {
 		log.Print("orm.RegisterDriver失败")
 	}
-	err = orm.RegisterDataBase("default", "mysql", dbUsername+":"+dbPasword+"@tcp("+dbHost+":"+dbPort+")/"+dbDatabase+"?charset="+dbCharset)
+	err = orm.RegisterDataBase("default", "mysql", dbUsername+":"+dbPasword+"@tcp("+dbHost+":"+dbPort+")/"+dbDatabase+"?charset="+dbCharset+"&loc=Local")
 	if err != nil {
 		log.Print("orm.RegisterDataBase失败")
 	}

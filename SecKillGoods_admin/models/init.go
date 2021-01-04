@@ -5,5 +5,5 @@ import (
 )
 
 func init() {
-	orm.RegisterModel(new(AdminUser))
+	orm.RegisterModel(new(AdminUser), new(AdminLog))
 }
