@@ -17,5 +17,8 @@ func main() {
 	//建表用的
 	//orm.RunCommand()
 
+	//过滤器，验证是否登录
+	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterLogin)
+
 	beego.Run()
 }

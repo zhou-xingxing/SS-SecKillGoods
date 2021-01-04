@@ -3,7 +3,6 @@ package controllers
 import (
 	"SecKillGoods_admin/models"
 	"SecKillGoods_admin/utils"
-	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
 	"log"
 	"regexp"
@@ -22,11 +21,11 @@ func (c *IndexController) Get() {
 func (c *IndexController) Index() {
 
 	c.Data["appname"], _ = beego.AppConfig.String("appname")
-	adminUser := c.GetSession("admin_user")
-	if adminUser == nil {
-		// 未登录
-		c.Redirect("/admin/login", 302)
-	}
+	//adminUser := c.GetSession("admin_user")
+	//if adminUser == nil {
+	//	// 未登录
+	//	c.Redirect("/admin/login", 302)
+	//}
 	//查询用户的权限
 	//ruleIds := logic.GetSessionAuth(c.Ctx)
 	//var adminAuthRules []*models.AdminAuthRule
@@ -58,8 +57,6 @@ func (c *IndexController) Welcome() {
 func (c *IndexController) DoLogin() {
 	username := c.GetString("username")
 	password := c.GetString("password")
-	fmt.Println(username, password)
-
 	//验证参数
 	pat1 := `^[a-zA-Z0-9_]{4,12}$`
 	pat2 := `^[a-zA-Z0-9_]{6,12}$`
@@ -72,17 +69,11 @@ func (c *IndexController) DoLogin() {
 		c.ApiError("密码不符合规则", nil)
 	}
 
-	sessionAdminUser := c.GetSession("admin_user")
-	if sessionAdminUser != nil {
-		//当前已登录
-		c.ApiSuccess("用户已登录", nil)
-	}
-
 	//加密密码且加盐
 	salt, _ := beego.AppConfig.String("pwd_salt")
 	password = utils.Md5Encode(password + salt)
 	adminUser, err := models.AdminUserGetUserOneByNameAndPwd(username, password)
-	log.Print(password)
+	log.Print(username, password)
 	if err != nil {
 		c.ApiError("用户名或者密码错误", nil)
 	}
