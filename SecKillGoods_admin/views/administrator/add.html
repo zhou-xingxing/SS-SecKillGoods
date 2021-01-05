@@ -3,23 +3,21 @@
         <form class="layui-form">
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>登录名
+                    <span class="x-red">*</span>用户名
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="username" name="username" required="" lay-verify="required"
                            autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>将会成为您唯一的登入名
-                </div>
             </div>
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>性别
+                    <span class="x-red">*</span>角色
                 </label>
                 <div class="layui-input-block">
-                    <input type="radio" name="sex" value="1" title="男" checked="">
-                    <input type="radio" name="sex" value="2" title="女">
+                    <input type="radio" name="role" value="1" title="超级管理员" >
+                    <input type="radio" name="role" value="2" title="高级管理员" checked="">
+                    <input type="radio" name="role" value="3" title="商品管理员">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -30,9 +28,6 @@
                     <input type="text" id="phone" name="phone" required="" lay-verify="phone"
                            autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
@@ -42,28 +37,18 @@
                     <input type="text" id="L_email" name="email" required="" lay-verify="email"
                            autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="x-red">*</span>角色</label>
-                <div class="layui-input-block">
-                    {{range .groups}}
-                        <input type="checkbox" name="group[]" lay-skin="primary" value="{{.Id}}" title="{{.Name}}" >
-                    {{end}}
-                </div>
+
             </div>
             <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">
                     <span class="x-red">*</span>密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                    <input type="password" id="L_pass" name="pwd" required="" lay-verify=""
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
-                    6到16个字符
+                    6到12个字符，且只能包含字母、数字、下划线
                 </div>
             </div>
             <div class="layui-form-item">
@@ -71,7 +56,7 @@
                     <span class="x-red">*</span>确认密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                    <input type="password" id="L_repass" name="repwd" required="" lay-verify=""
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -90,34 +75,21 @@
             $ = layui.jquery;
             var form = layui.form,
                 layer = layui.layer;
-
             //自定义验证规则
             form.verify({
-                nikename: function(value) {
-                    if (value.length < 5) {
-                        return '昵称至少得5个字符啊';
-                    }
-                },
-                pass: [/(.+){6,12}$/, '密码必须6到12位'],
-                repass: function(value) {
-                    if ($('#L_pass').val() != $('#L_repass').val()) {
-                        return '两次密码不一致';
-                    }
-                }
-            });
 
+            });
             //监听提交
             form.on('submit(add)',
                 function(data) {
                     console.log(data)
-                    request_post("/admin/sys/add",data.field).then(function (data) {
+                    request_post("/admin/administrator/add",data.field).then(function (data) {
                         layer.alert("增加成功", {
                                 icon: 6
                             },
                             function() {
                                 //关闭当前frame
                                 xadmin.close();
-
                                 // 可以对父窗口进行刷新
                                 xadmin.father_reload();
                             });

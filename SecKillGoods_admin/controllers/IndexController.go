@@ -139,7 +139,7 @@ func (c *IndexController) Person() {
 
 		o := orm.NewOrm()
 		err := o.Read(&adminUser)
-		log.Print("修改前", adminUser)
+
 		if err != nil {
 			c.ApiError("查询失败", nil)
 		}
@@ -175,7 +175,7 @@ func (c *IndexController) Person() {
 		if err != nil {
 			c.ApiError(err.Error(), nil)
 		}
-		log.Println("修改后", adminUser)
+
 		//更新Session
 		c.RefreshAdminUserSession(&adminUser)
 		c.ApiSuccess("更新成功", nil)

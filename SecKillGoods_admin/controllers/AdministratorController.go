@@ -4,7 +4,9 @@ import (
 	"SecKillGoods_admin/models"
 	"SecKillGoods_admin/utils"
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/validation"
 	_ "github.com/beego/beego/v2/server/web"
+	beego "github.com/beego/beego/v2/server/web"
 )
 
 //管理员管理
@@ -75,4 +77,53 @@ func (c *AdministratorController) UpdateStatus() {
 		}
 	}
 	c.ApiError("操作失败", nil)
+}
+
+//增加管理员用户页
+func (c *AdministratorController) AddPage() {
+	c.SetTpl("administrator/add.html")
+}
+
+//增加用户
+func (c *AdministratorController) Add() {
+	var adminUser models.AdminUser
+	_ = c.Ctx.Input.Bind(&adminUser.Username, "username")
+	_ = c.Ctx.Input.Bind(&adminUser.RoleId, "role")
+	_ = c.Ctx.Input.Bind(&adminUser.Phone, "phone")
+	_ = c.Ctx.Input.Bind(&adminUser.Email, "email")
+	_ = c.Ctx.Input.Bind(&adminUser.Password, "pwd")
+	adminUser.Status = 1 //设置为可用
+	repwd := c.GetString("repwd")
+	// 验证字段
+	valid := validation.Validation{}
+	valid.Email(adminUser.Email, "email").Message("邮箱格式不正确")
+	valid.Mobile(adminUser.Phone, "phone").Message("手机号码格式不正确")
+	if valid.HasErrors() {
+		for _, err := range valid.Errors {
+			c.ApiError(err.Message, nil)
+		}
+	}
+	if repwd != adminUser.Password {
+		c.ApiError("两次密码不一致", nil)
+	}
+
+	o := orm.NewOrm()
+	//检查用户名是否已使用
+	num, err := o.QueryTable(new(models.AdminUser)).Filter("username", adminUser.Username).Count()
+	if err != nil {
+		c.ApiError(err.Error(), nil)
+	}
+	if num > 0 {
+		c.ApiError("当前用户名已存在", nil)
+	}
+
+	salt, _ := beego.AppConfig.String("pwd_salt")
+	adminUser.Password = utils.Md5Encode(adminUser.Password + salt)
+
+	num, err = o.Insert(&adminUser)
+	if err == nil && num > 0 {
+		c.ApiSuccess("插入成功", "")
+	}
+	c.ApiError("插入失败", nil)
+
 }
