@@ -1,24 +1,24 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            {{range .treeMenus}}
                 <li>
                     <a href="javascript:;">
-                        <i class="iconfont left-nav-li" lay-tips="{{.Name}}">{{str2html .Icon}}</i>
-                        <cite>{{.Name}}</cite>
+                        <i class="iconfont left-nav-li" lay-tips="系统管理"></i>
+                        <cite>系统管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i></a>
-
                     <ul class="sub-menu">
-                        {{range $elem := .Children}}
                             <li>
-                                <a onclick="xadmin.add_tab('{{$elem.Name}}','{{$elem.SkipUrl}}')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>{{$elem.Name}}</cite></a>
+                            <a onclick="xadmin.add_tab('#','#')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>管理员列表</cite></a>
                             </li>
-                        {{end}}
+                        <li>
+                            <a onclick="xadmin.add_tab('系统日志','/admin/log')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>系统日志</cite></a>
+                        </li>
                     </ul>
                 </li>
-            {{end}}
         </ul>
     </div>
 </div>

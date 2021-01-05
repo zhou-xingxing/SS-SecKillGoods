@@ -28,8 +28,6 @@ func FilterAddLog(ctx *context.Context) {
 		adminUser := adminUserSession.(*models.AdminUser)
 		adminUserId = adminUser.Id
 		username = adminUser.Username
-	} else {
-		return
 	}
 
 	adminLog := models.AdminLog{

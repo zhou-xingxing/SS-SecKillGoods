@@ -20,8 +20,10 @@ func main() {
 
 	//过滤器，验证是否登录
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterLogin)
-	////过滤器：加日志
-	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterAddLog)
-	//
+	//过滤器：敏感操作加日志
+	beego.InsertFilter("/admin/dologin", beego.BeforeRouter, sysinit.FilterAddLog)
+	beego.InsertFilter("/admin/person", beego.BeforeRouter, sysinit.FilterAddLog)
+	beego.InsertFilter("/admin/logout", beego.BeforeRouter, sysinit.FilterAddLog)
+
 	beego.Run()
 }

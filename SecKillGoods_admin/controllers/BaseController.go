@@ -3,6 +3,7 @@ package controllers
 import (
 	"SecKillGoods_admin/models"
 	beego "github.com/beego/beego/v2/server/web"
+	"strconv"
 	"strings"
 )
 
@@ -65,4 +66,16 @@ func (c *BaseController) SetTpl(template ...string) {
 
 	c.Layout = layout
 	c.TplName = tplName
+}
+
+//获取默认每页显示的数量
+func (c *BaseController) GetDefaultPageSize() int {
+	nums, _ := beego.AppConfig.String("page_size")
+	pageSize, _ := strconv.Atoi(nums)
+	return pageSize
+}
+
+//计算分页的偏移量
+func (c *BaseController) GetPageOffset(pageNo int, pageSize int) int {
+	return (pageNo - 1) * pageSize
 }
