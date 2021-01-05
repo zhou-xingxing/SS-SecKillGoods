@@ -4,6 +4,7 @@ import (
 	"SecKillGoods_admin/models"
 	"SecKillGoods_admin/utils"
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/validation"
 	beego "github.com/beego/beego/v2/server/web"
 	"log"
 	"regexp"
@@ -145,6 +146,16 @@ func (c *IndexController) Person() {
 
 		_ = c.Ctx.Input.Bind(&adminUser.Phone, "phone")
 		_ = c.Ctx.Input.Bind(&adminUser.Email, "email")
+
+		valid := validation.Validation{}
+		valid.Email(adminUser.Email, "email").Message("邮箱格式不正确")
+		valid.Mobile(adminUser.Phone, "phone").Message("手机号码格式不正确")
+		if valid.HasErrors() {
+			for _, err := range valid.Errors {
+				c.ApiError(err.Message, nil)
+			}
+		}
+
 		pwd := c.GetString("pwd", "")
 		//密码为空说明没有修改密码
 		if pwd != "" {
@@ -172,4 +183,8 @@ func (c *IndexController) Person() {
 	adminUser := c.GetSession("admin_user")
 	c.Data["adminUser"] = adminUser
 	c.SetTpl("index/person.html")
+}
+
+func (c *IndexController) AuthError() {
+	c.TplName = "common/auth_error.html"
 }

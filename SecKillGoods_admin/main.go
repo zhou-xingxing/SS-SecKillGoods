@@ -25,5 +25,7 @@ func main() {
 	beego.InsertFilter("/admin/person", beego.BeforeRouter, sysinit.FilterAddLog)
 	beego.InsertFilter("/admin/logout", beego.BeforeRouter, sysinit.FilterAddLog)
 
+	beego.InsertFilter("/admin/administrator/*", beego.BeforeRouter, sysinit.FilterAddLog)
+
 	beego.Run()
 }

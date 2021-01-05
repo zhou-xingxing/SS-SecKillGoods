@@ -1,0 +1,81 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5" action="/admin/administrator" method="get" >
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" value="{{.username}}" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/admin/administrator/create',600,500)"><i class="layui-icon"></i>添加</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>手机</th>
+                            <th>邮箱</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {{range .list}}
+                            <tr>
+                                <td>{{.Id}}</td>
+                                <td>{{.Username}}</td>
+                                <td>{{.Phone}}</td>
+                                <td>{{.Email}}</td>
+                                <td><input type="checkbox" name="status" {{if compare .Id 1}} disabled {{end}} lay-text="正常|禁用" {{if compare .Status 1}} checked="" {{end}} lay-skin="switch" lay-filter="status" data-id="{{.Id}}"></td>
+                                <td class="td-manage">
+                                    <button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑用户','/admin/administrator/edit/{{.Id}}',600,450)" ><i class="layui-icon">&#xe642;</i>编辑</button>
+                                    <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    {{str2html .paginator}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+
+        /*用户-停用*/
+        form.on('switch(status)', function (obj) {
+            var id = $(this).data('id')
+            request_get('/admin/administrator/update_status/'+id).then(function (data) {
+                //设置成功
+            },function (error) {
+                msg_error(error.msg)
+            })
+
+        });
+    })
+    /*删除*/
+    function del(obj,id){
+        layer.confirm("确认要执行此操作吗？",function(index){
+            request_get('/admin/administrator/destroy/'+id).then(function (data) {
+                $(obj).parents("tr").remove();
+            },function (error) {
+                msg_error(error.msg)
+            })
+            layer.close(index)
+        })
+    }
+</script>
