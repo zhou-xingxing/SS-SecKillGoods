@@ -4,39 +4,30 @@
             <input type="hidden" name="id" value="{{.adminUser.Id}}">
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
-                    用户名
+                    <span class="x-red">*</span>用户名
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="username" name="username" required="" lay-verify="required"
                            autocomplete="off" class="layui-input layui-disabled" value="{{.adminUser.Username}}" disabled>
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
             </div>
 
             <div class="layui-form-item">
                 <label for="phone" class="layui-form-label">
-                    手机
+                    <span class="x-red">*</span>手机
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="phone" name="phone" required="" lay-verify="phone"
                            autocomplete="off" class="layui-input" value="{{.adminUser.Phone}}">
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
-                </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
-                    邮箱
+                    <span class="x-red">*</span>邮箱
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_email" name="email" required="" lay-verify="email"
                            autocomplete="off" class="layui-input" value="{{.adminUser.Email}}">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -63,7 +54,7 @@
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                <button  class="layui-btn" lay-filter="update" lay-submit="">
                     更新
                 </button>
             </div>
@@ -81,7 +72,7 @@
 
             });
             //监听提交
-            form.on('submit(add)',
+            form.on('submit(update)',
                 function(data) {
                     request_post("/admin/person",data.field).then(function (data) {
                         layer.alert("更新成功", {

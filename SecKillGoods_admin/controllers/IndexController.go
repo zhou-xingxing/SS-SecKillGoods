@@ -25,22 +25,6 @@ func (c *IndexController) Get() {
 func (c *IndexController) Index() {
 
 	c.Data["appname"], _ = beego.AppConfig.String("appname")
-	//adminUser := c.GetSession("admin_user")
-	//if adminUser == nil {
-	//	// 未登录
-	//	c.Redirect("/admin/login", 302)
-	//}
-	//查询用户的权限
-	//ruleIds := logic.GetSessionAuth(c.Ctx)
-	//var adminAuthRules []*models.AdminAuthRule
-	//if ruleIds[0] != "*"{
-	//	adminAuthRules,_ = models.AdminAuthRuleGetMenu(ruleIds...)
-	//}else{
-	//	adminAuthRules,_ = models.AdminAuthRuleGetMenu()
-	//}
-	////组装成树形菜单
-	//c.Data["treeMenus"] = logic.MakeRuleTree(adminAuthRules,0)
-	//
 	c.Data["adminUser"] = c.GetSession("admin_user")
 	c.TplName = "index/index.html"
 }

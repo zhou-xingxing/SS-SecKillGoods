@@ -3,8 +3,15 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <blockquote class="layui-elem-quote">欢迎管理员：
-                        <span class="x-red">{{.adminUser.Username}}</span>！当前时间:{{.nowTime}}
+                    <blockquote class="layui-elem-quote">欢迎
+                        {{if eq .adminUser.RoleId 1}}
+                        超级管理员
+                        {{else if eq .adminUser.RoleId 2}}
+                        高级管理员
+                        {{else}}
+                        商品管理员
+                        {{end}}
+                        <span class="x-red"> {{.adminUser.Username}}</span>！当前时间:{{.nowTime}}
                     </blockquote>
                 </div>
             </div>

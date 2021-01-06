@@ -7,7 +7,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="username" name="username" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{{.adminUser.Username}}" >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     4到12个字符，且只能包含字母、数字、下划线
@@ -18,9 +18,19 @@
                     <span class="x-red">*</span>角色
                 </label>
                 <div class="layui-input-block">
-                    <input type="radio" name="role" value="1" title="超级管理员" >
+                    {{if eq .adminUser.RoleId 1}}
+                    <input type="radio" name="role" value="1" title="超级管理员" checked>
                     <input type="radio" name="role" value="2" title="高级管理员" >
                     <input type="radio" name="role" value="3" title="商品管理员">
+                    {{else if eq .adminUser.RoleId 2}}
+                    <input type="radio" name="role" value="1" title="超级管理员" >
+                    <input type="radio" name="role" value="2" title="高级管理员" checked>
+                    <input type="radio" name="role" value="3" title="商品管理员">
+                    {{else}}
+                    <input type="radio" name="role" value="1" title="超级管理员">
+                    <input type="radio" name="role" value="2" title="高级管理员" >
+                    <input type="radio" name="role" value="3" title="商品管理员" checked>
+                    {{end}}
                 </div>
             </div>
             <div class="layui-form-item">
@@ -29,7 +39,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="phone" name="phone" required="" lay-verify="phone"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{{.adminUser.Phone}}" >
                 </div>
             </div>
             <div class="layui-form-item">
@@ -38,17 +48,17 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="L_email" name="email" required="" lay-verify="email"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{{.adminUser.Email}}" >
                 </div>
-
             </div>
+
             <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">
-                    <span class="x-red">*</span>密码
+                    密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pwd" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                    <input type="password" id="L_pass" name="pwd" required="" lay-verify=""
+                           autocomplete="off" class="layui-input" placeholder="为空则不修改密码"  >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     6到12个字符，且只能包含字母、数字、下划线
@@ -56,18 +66,18 @@
             </div>
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
-                    <span class="x-red">*</span>确认密码
+                    确认密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repwd" required="" lay-verify="required"
+                    <input type="password" id="L_repass" name="repwd" required="" lay-verify=""
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                <button  class="layui-btn" lay-filter="update" lay-submit="">
+                    更新
                 </button>
             </div>
         </form>
@@ -78,16 +88,13 @@
             $ = layui.jquery;
             var form = layui.form,
                 layer = layui.layer;
-            //自定义验证规则
-            form.verify({
 
-            });
             //监听提交
-            form.on('submit(add)',
+            form.on('submit(update)',
                 function(data) {
                     // console.log(data)
-                    request_post("/admin/administrator/add",data.field).then(function (data) {
-                        layer.alert("增加成功", {
+                    request_post("/admin/administrator/update/{{.adminUser.Id}}",data.field).then(function (data) {
+                        layer.alert("修改成功", {
                                 icon: 6
                             },
                             function() {

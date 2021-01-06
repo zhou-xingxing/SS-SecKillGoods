@@ -22,6 +22,7 @@
                         <tr>
                             <th>ID</th>
                             <th>用户名</th>
+                            <th>角色</th>
                             <th>手机</th>
                             <th>邮箱</th>
                             <th>状态</th>
@@ -32,12 +33,21 @@
                             <tr>
                                 <td>{{.Id}}</td>
                                 <td>{{.Username}}</td>
+                                <td>
+                                    {{if eq .RoleId 1}}
+                                    超级管理员
+                                    {{else if eq .RoleId 2}}
+                                    高级管理员
+                                    {{else}}
+                                    商品管理员
+                                    {{end}}
+                                </td>
                                 <td>{{.Phone}}</td>
                                 <td>{{.Email}}</td>
                                 <!--    开关风格-->
                                 <td><input type="checkbox" name="status" {{if compare .Id 1}} disabled {{end}} lay-text="正常|禁用" {{if compare .Status 1}} checked="" {{end}} lay-skin="switch" lay-filter="status" data-id="{{.Id}}"></td>
                                 <td class="td-manage">
-                                    <button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑用户','/admin/administrator/edit/{{.Id}}',600,450)" ><i class="layui-icon">&#xe642;</i>编辑</button>
+                                    <button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑用户','/admin/administrator/edit_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>编辑</button>
                                     <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
                                 </td>
                             </tr>

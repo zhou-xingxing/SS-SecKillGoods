@@ -29,8 +29,8 @@ func init() {
 			beego.NSRouter("/update_status/:id", &controllers.AdministratorController{}, "*:UpdateStatus"),
 			beego.NSRouter("/add_page", &controllers.AdministratorController{}, "*:AddPage"),
 			beego.NSRouter("/add", &controllers.AdministratorController{}, "*:Add"),
-			//beego.NSRouter("/edit/:id", &controllers.AdminSysController{},"*:Edit"),
-			//beego.NSRouter("/update/:id", &controllers.AdminSysController{},"*:Update"),
+			beego.NSRouter("/edit_page/:id", &controllers.AdministratorController{}, "*:EditPage"),
+			beego.NSRouter("/update/:id", &controllers.AdministratorController{}, "*:Update"),
 			beego.NSRouter("/destroy/:id", &controllers.AdministratorController{}, "*:Destroy"),
 		),
 	)
