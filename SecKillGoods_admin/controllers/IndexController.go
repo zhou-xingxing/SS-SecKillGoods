@@ -110,7 +110,6 @@ func (c *IndexController) Welcome() {
 	c.Data["goArch"] = runtime.GOARCH         //系统构架
 	c.Data["sysVersion"] = runtime.Version()  //go版本
 
-	//c.TplName = "index/welcome.html"
 	c.SetTpl("index/welcome.html")
 }
 
@@ -123,11 +122,9 @@ func (c *IndexController) Person() {
 
 		o := orm.NewOrm()
 		err := o.Read(&adminUser)
-
 		if err != nil {
 			c.ApiError("查询失败", nil)
 		}
-
 		_ = c.Ctx.Input.Bind(&adminUser.Phone, "phone")
 		_ = c.Ctx.Input.Bind(&adminUser.Email, "email")
 
@@ -139,7 +136,6 @@ func (c *IndexController) Person() {
 				c.ApiError(err.Message, nil)
 			}
 		}
-
 		pwd := c.GetString("pwd", "")
 		//密码为空说明没有修改密码
 		if pwd != "" {
@@ -159,7 +155,6 @@ func (c *IndexController) Person() {
 		if err != nil {
 			c.ApiError(err.Error(), nil)
 		}
-
 		//更新Session
 		c.RefreshAdminUserSession(&adminUser)
 		c.ApiSuccess("更新成功", nil)

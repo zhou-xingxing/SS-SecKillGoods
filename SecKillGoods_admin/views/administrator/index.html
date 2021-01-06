@@ -47,8 +47,8 @@
                                 <!--    开关风格-->
                                 <td><input type="checkbox" name="status" {{if compare .Id 1}} disabled {{end}} lay-text="正常|禁用" {{if compare .Status 1}} checked="" {{end}} lay-skin="switch" lay-filter="status" data-id="{{.Id}}"></td>
                                 <td class="td-manage">
-                                    <button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑用户','/admin/administrator/edit_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>编辑</button>
-                                    <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+                                    <button class="layui-btn layui-btn layui-btn-xs"  {{if compare .Id 1}} onclick="alert('不允许编辑超级管理员')" {{end}} onclick="xadmin.open('编辑用户','/admin/administrator/edit_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>编辑</button>
+                                    <button class="layui-btn-danger layui-btn layui-btn-xs"  {{if compare .Id 1}} onclick="alert('不允许删除超级管理员')" {{end}} onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
                                 </td>
                             </tr>
                         {{end}}

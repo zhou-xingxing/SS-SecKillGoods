@@ -18,16 +18,10 @@
                     <span class="x-red">*</span>角色
                 </label>
                 <div class="layui-input-block">
-                    {{if eq .adminUser.RoleId 1}}
-                    <input type="radio" name="role" value="1" title="超级管理员" checked>
-                    <input type="radio" name="role" value="2" title="高级管理员" >
-                    <input type="radio" name="role" value="3" title="商品管理员">
-                    {{else if eq .adminUser.RoleId 2}}
-                    <input type="radio" name="role" value="1" title="超级管理员" >
+                    {{if eq .adminUser.RoleId 2}}
                     <input type="radio" name="role" value="2" title="高级管理员" checked>
                     <input type="radio" name="role" value="3" title="商品管理员">
                     {{else}}
-                    <input type="radio" name="role" value="1" title="超级管理员">
                     <input type="radio" name="role" value="2" title="高级管理员" >
                     <input type="radio" name="role" value="3" title="商品管理员" checked>
                     {{end}}

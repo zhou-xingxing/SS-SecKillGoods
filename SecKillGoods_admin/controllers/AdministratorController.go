@@ -46,6 +46,9 @@ func (c *AdministratorController) Index() {
 //删除管理员
 func (c *AdministratorController) Destroy() {
 	id, _ := c.GetInt(":id")
+	if id == 1 {
+		c.ApiError("不允许删除超级管理员", nil)
+	}
 	o := orm.NewOrm()
 	if num, err := o.Delete(&models.AdminUser{Id: id}); err == nil {
 		if num > 0 {
@@ -110,7 +113,10 @@ func (c *AdministratorController) Add() {
 		c.ApiError("两次密码不一致", nil)
 	}
 	// 验证其他字段
-	if adminUser.RoleId != 1 && adminUser.RoleId != 2 && adminUser.RoleId != 3 {
+	if adminUser.RoleId == 1 {
+		c.ApiError("不允许增加超级管理员", nil)
+	}
+	if adminUser.RoleId != 2 && adminUser.RoleId != 3 {
 		c.ApiError("角色不符合规则", nil)
 	}
 	valid := validation.Validation{}
@@ -147,6 +153,9 @@ func (c *AdministratorController) EditPage() {
 	if err != nil {
 		c.ApiError("获取id失败", nil)
 	}
+	if id == 1 {
+		c.ApiError("不允许更新超级管理员", nil)
+	}
 	//查询用户数据
 	o := orm.NewOrm()
 	adminUser := models.AdminUser{Id: id}
@@ -160,6 +169,10 @@ func (c *AdministratorController) EditPage() {
 
 //更新用户
 func (c *AdministratorController) Update() {
+	id, _ := c.GetInt(":id")
+	if id == 1 {
+		c.ApiError("不允许更新超级管理员", nil)
+	}
 	var adminUser models.AdminUser
 	o := orm.NewOrm()
 	_ = c.Ctx.Input.Bind(&adminUser.Id, ":id")
