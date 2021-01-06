@@ -5,6 +5,7 @@ import (
 	"SecKillGoods_admin/models"
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web/context"
+	"regexp"
 )
 
 //是否登录
@@ -29,11 +30,29 @@ func FilterAddLog(ctx *context.Context) {
 		adminUserId = adminUser.Id
 		username = adminUser.Username
 	}
-
+	//过滤非敏感操作
+	nologUrl := []string{
+		`/`,
+		`/admin/*`,
+		`/admin/login/*`,
+		`/admin/welcome/*`,
+		`/admin/log(\?)?.*`,
+	}
+	url := ctx.Request.RequestURI
+	for _, v := range nologUrl {
+		r := regexp.MustCompile(v)
+		loc := r.FindStringIndex(url)
+		if loc != nil {
+			//完全匹配
+			if loc[0] == 0 && loc[1] == len(url) {
+				return
+			}
+		}
+	}
 	adminLog := models.AdminLog{
 		AdminUserId: adminUserId,
 		Username:    username,
-		Url:         ctx.Request.RequestURI,
+		Url:         url,
 		Ip:          ctx.Request.RemoteAddr,
 	}
 	m := orm.NewOrm()
