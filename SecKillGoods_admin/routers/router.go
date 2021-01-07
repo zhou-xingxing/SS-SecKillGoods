@@ -18,8 +18,8 @@ func init() {
 		beego.NSRouter("/logout", &controllers.IndexController{}, "*:Logout"),
 		beego.NSRouter("/auth_error", &controllers.IndexController{}, "*:AuthError"),
 
-		//管理员日志
-		beego.NSNamespace("/log",
+		//系统日志
+		beego.NSNamespace("/syslog",
 			beego.NSRouter("/", &controllers.AdminLogController{}, "*:Index"),
 		),
 
