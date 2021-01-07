@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/beego/beego/v2/client/orm"
+	"strings"
 )
 
 //管理员权限模型
@@ -12,9 +13,19 @@ type AdminAuthRule struct {
 	RoleIdList string
 }
 
-//根据地址获取权限ID 目前只能完全匹配的情况才能识别
-func CheckRuleByUrl(Url string) (AdminAuthRule, error) {
-	var adminAuthRule AdminAuthRule
-	err := orm.NewOrm().QueryTable("admin_auth_rule").Filter("rule_url", Url).One(&adminAuthRule)
-	return adminAuthRule, err
+//根据地址获取权限ID
+//改用前缀匹配
+func CheckRuleByUrl(Url string) (*AdminAuthRule, error) {
+	//取出所有规则
+	var rules []AdminAuthRule
+	_, err := orm.NewOrm().QueryTable("admin_auth_rule").All(&rules)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range rules {
+		if strings.HasPrefix(Url, v.RuleUrl) {
+			return &v, err
+		}
+	}
+	return nil, err
 }

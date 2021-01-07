@@ -36,7 +36,8 @@ func FilterAddLog(ctx *context.Context) {
 		`/admin/*`,
 		`/admin/login/*`,
 		`/admin/welcome/*`,
-		`/admin/syslog(\?)?.*`,
+		//`/admin/syslog(\?)?.*`,
+		//`/admin/auth_error/*`,
 	}
 	url := ctx.Request.RequestURI
 	for _, v := range nologUrl {
@@ -70,10 +71,9 @@ func FilterAuth(ctx *context.Context) {
 		return
 	}
 	//检查当前访问是否为需要鉴权的操作
-	//有bug 目前只能完全匹配的情况才能识别
 	authRule, _ := models.CheckRuleByUrl(ctx.Request.RequestURI)
 	//如果不需要
-	if authRule.Id == 0 {
+	if authRule == nil {
 		return
 	} else {
 		//检验当前role_id是否在允许列表里
@@ -83,6 +83,5 @@ func FilterAuth(ctx *context.Context) {
 			//没有权限
 			ctx.Redirect(302, "/admin/auth_error")
 		}
-
 	}
 }
