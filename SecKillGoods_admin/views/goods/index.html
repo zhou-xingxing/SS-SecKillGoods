@@ -1,0 +1,75 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5" action="/admin/goods" method="get" >
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="goods_name"  placeholder="请输入商品名" autocomplete="off" value="{{.goods_name}}" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加商品','/admin/goods/add_page',600,500)"><i class="layui-icon"></i>添加</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>商品名</th>
+                            <th>价格</th>
+                            <th>数量</th>
+                            <th>创建者ID</th>
+                            <th>秒杀开始时间</th>
+                            <th>秒杀截止时间</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {{range .list}}
+                        <tr>
+                            <td>{{.Id}}</td>
+                            <td>{{.GoodsName}}</td>
+                            <td>{{.GoodsPrice}}</td>
+                            <td>{{.GoodsNumber}}</td>
+                            <td>{{.CreatorId}}</td>
+                            <td>{{date .StartTime "Y-m-d H:i:s"}}</td>
+                            <td>{{date .StartTime "Y-m-d H:i:s"}}</td>
+                            <!--    开关风格-->
+                            <td class="td-manage">
+                                <button class="layui-btn layui-btn layui-btn-xs"   onclick="xadmin.open('编辑商品','/admin/goods/edit_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>编辑</button>
+                                <button class="layui-btn-danger layui-btn layui-btn-xs"   onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+                            </td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    {{str2html .paginator}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+    })
+    /*删除*/
+    function del(obj,id){
+        layer.confirm("确认要执行此操作吗？",function(index){
+            request_get('/admin/goods/destroy/'+id).then(function (data) {
+                $(obj).parents("tr").remove();
+            },function (error) {
+                msg_error(error.msg)
+            })
+            layer.close(index)
+        })
+    }
+</script>

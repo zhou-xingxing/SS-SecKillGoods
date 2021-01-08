@@ -5,11 +5,12 @@ import (
 	_ "SecKillGoods_admin/routers"
 	"SecKillGoods_admin/sysinit"
 	beego "github.com/beego/beego/v2/server/web"
+	//"github.com/beego/beego/v2/client/orm"
 )
 
 func main() {
 
-	//root 123456 1d556689c428b9bb2c19bf6eac9cfdbd
+	//root 12345678
 	//开启session
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	//初始化数据库

@@ -8,7 +8,7 @@ func (adminUser *AdminUser) TableName() string {
 	return "admin_user"
 }
 
-//AdminUser实体类
+//管理员类
 type AdminUser struct {
 	Id       int
 	Username string `orm:"unique"`
