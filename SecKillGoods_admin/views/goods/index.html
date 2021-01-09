@@ -14,7 +14,7 @@
                     </form>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn" onclick="xadmin.open('添加商品','/admin/goods/add_page',600,500)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加商品','/admin/goods/add_page',600,600)"><i class="layui-icon"></i>添加</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -38,7 +38,7 @@
                             <td>{{.GoodsNumber}}</td>
                             <td>{{.CreatorId}}</td>
                             <td>{{date .StartTime "Y-m-d H:i:s"}}</td>
-                            <td>{{date .StartTime "Y-m-d H:i:s"}}</td>
+                            <td>{{date .EndTime "Y-m-d H:i:s"}}</td>
                             <!--    开关风格-->
                             <td class="td-manage">
                                 <button class="layui-btn layui-btn layui-btn-xs"   onclick="xadmin.open('编辑商品','/admin/goods/edit_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>编辑</button>

@@ -37,11 +37,11 @@ func init() {
 		//商品管理
 		beego.NSNamespace("/goods",
 			beego.NSRouter("/", &controllers.GoodsController{}, "*:Index"),
-			//beego.NSRouter("/add_page", &controllers.GoodsController{}, "*:AddPage"),
-			//beego.NSRouter("/add", &controllers.GoodsController{}, "*:Add"),
+			beego.NSRouter("/add_page", &controllers.GoodsController{}, "*:AddPage"),
+			beego.NSRouter("/add", &controllers.GoodsController{}, "*:Add"),
 			//beego.NSRouter("/edit_page/:id", &controllers.GoodsController{}, "*:EditPage"),
 			//beego.NSRouter("/update/:id", &controllers.GoodsController{}, "*:Update"),
-			//beego.NSRouter("/destroy/:id", &controllers.GoodsController{}, "*:Destroy"),
+			beego.NSRouter("/destroy/:id", &controllers.GoodsController{}, "*:Destroy"),
 		),
 	)
 	beego.AddNamespace(ns)

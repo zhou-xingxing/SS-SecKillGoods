@@ -58,7 +58,7 @@ func (c *IndexController) DoLogin() {
 	password = utils.Md5Encode(password + salt)
 	adminUser, err := models.AdminUserGetUserOneByNameAndPwd(username, password)
 
-	log.Print(username, password)
+	//log.Print(username, password)
 	if err != nil {
 		c.ApiError("用户名或者密码错误", nil)
 	}
