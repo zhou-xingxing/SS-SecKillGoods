@@ -87,6 +87,7 @@ func (c *GoodsController) Add() {
 	valid := validation.Validation{}
 	r, errre := regexp.Compile("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$")
 	if errre != nil {
+		log.Print("正则表达式编译错误")
 		c.ApiError("正则表达式编译出错", nil)
 	}
 	valid.Match(goods.GoodsName, r, "goods_name").Message("商品名不合法")

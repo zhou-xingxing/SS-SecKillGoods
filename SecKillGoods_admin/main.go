@@ -5,7 +5,6 @@ import (
 	_ "SecKillGoods_admin/routers"
 	"SecKillGoods_admin/sysinit"
 	beego "github.com/beego/beego/v2/server/web"
-	//"github.com/beego/beego/v2/client/orm"
 )
 
 func main() {

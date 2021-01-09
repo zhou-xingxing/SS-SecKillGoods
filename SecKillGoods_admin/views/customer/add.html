@@ -1,0 +1,70 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">
+                    <span class="x-red">*</span>手机
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="phone" name="phone" required="" lay-verify="phone"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    手机号将作为消费者抢购的唯一账号
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="customer_name" class="layui-form-label">
+                    <span class="x-red">*</span>姓名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="customer_name" name="customer_name" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    不能含有特殊字符
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+        //自定义验证规则
+        form.verify({
+
+        });
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                // console.log(data)
+                request_post("/admin/customer/add",data.field).then(function (data) {
+                    layer.alert("增加成功", {
+                            icon: 6
+                        },
+                        function() {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                },function (error) {
+                    msg_error(error.msg)
+                })
+                return false;
+            });
+
+    });</script>

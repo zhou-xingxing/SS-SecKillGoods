@@ -1,0 +1,68 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5" action="/admin/customer" method="get" >
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="phone"  placeholder="请输入用户手机号" autocomplete="off" value="{{.phone}}" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/admin/customer/add_page',600,500)"><i class="layui-icon"></i>添加</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>手机</th>
+                            <th>姓名</th>
+                            <th>抢购码</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {{range .list}}
+                        <tr>
+                            <td>{{.Id}}</td>
+                            <td>{{.Phone}}</td>
+                            <td>{{.CustomerName}}</td>
+                            <td>{{.Code}}</td>
+                            <!--    开关风格-->
+                            <td class="td-manage">
+                                <button class="layui-btn-danger layui-btn layui-btn-xs"   onclick="del(this,{{.Id}})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+                            </td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    {{str2html .paginator}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['laydate','form'], function(){
+        var laydate = layui.laydate;
+        var form = layui.form;
+    })
+    /*删除*/
+    function del(obj,id){
+        layer.confirm("确认要执行此操作吗？",function(index){
+            request_get('/admin/goods/destroy/'+id).then(function (data) {
+                $(obj).parents("tr").remove();
+            },function (error) {
+                msg_error(error.msg)
+            })
+            layer.close(index)
+        })
+    }
+</script>
