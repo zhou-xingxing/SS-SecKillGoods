@@ -3,7 +3,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form layui-col-space5" action="/admin/syslog" method="get" >
+                    <form class="layui-form layui-col-space5" action="/admin/order" method="get" >
                         <div class="layui-inline layui-show-xs-block">
                             <input class="layui-input"  autocomplete="off" placeholder="开始日期" name="start_time" id="start" value="{{.start_time}}">
                         </div>
@@ -11,7 +11,10 @@
                             <input class="layui-input"  autocomplete="off" placeholder="截止日期" name="end_time" id="end" value="{{.end_time}}">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
-                            <input type="text" name="keyword"  placeholder="用户名" autocomplete="off" value="{{.keyword}}" class="layui-input">
+                            <input type="text" name="phone"  placeholder="请输入用户名手机号" autocomplete="off" value="{{.phone}}" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="goods_id"  placeholder="请输入商品ID" autocomplete="off" value="{{.goods_id}}" class="layui-input">
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -23,20 +26,18 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>管理员</th>
-                            <th>URL</th>
-                            <th>IP</th>
+                            <th>用户手机号</th>
+                            <th>商品ID</th>
                             <th>创建时间</th>
                         </thead>
                         <tbody>
                         {{range .list}}
-                            <tr>
-                                <td>{{.Id}}</td>
-                                <td>{{.Username}}</td>
-                                <td>{{.Url}}</td>
-                                <td>{{.Ip}}</td>
-                                <td>{{date .CreatedTime "Y-m-d H:i:s"}}</td>
-                            </tr>
+                        <tr>
+                            <td>{{.Id}}</td>
+                            <td>{{.Phone}}</td>
+                            <td>{{.GoodsId}}</td>
+                            <td>{{date .CreatedTime "Y-m-d H:i:s"}}</td>
+                        </tr>
                         {{end}}
                         </tbody>
                     </table>

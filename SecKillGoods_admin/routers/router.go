@@ -52,10 +52,10 @@ func init() {
 			beego.NSRouter("/destroy/:id", &controllers.CustomerController{}, "*:Destroy"),
 		),
 		//
-		////订单
-		//beego.NSNamespace("/order",
-		//	beego.NSRouter("/", &controllers.AdminLogController{}, "*:Index"),
-		//),
+		//订单
+		beego.NSNamespace("/order",
+			beego.NSRouter("/", &controllers.OrderController{}, "*:Index"),
+		),
 	)
 	beego.AddNamespace(ns)
 }

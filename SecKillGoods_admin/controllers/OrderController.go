@@ -6,27 +6,37 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 )
 
-//系统日志
-type AdminLogController struct {
+type OrderController struct {
 	BaseController
 }
 
-//查看日志
-func (c *AdminLogController) Index() {
+//订单列表
+func (c *OrderController) Index() {
 	pageNo, _ := c.GetInt("page", 1)
 	pageSize := c.GetDefaultPageSize()
-	//pageSize := 50
-	keyword := c.GetString("keyword", "")
+	phone := c.GetString("phone", "")
+	goods_id := c.GetString("goods_id", "")
 	start_time := c.GetString("start_time", "")
 	end_time := c.GetString("end_time", "")
+
 	o := orm.NewOrm()
-	//日志列表
-	var list []*models.AdminLog
-	qs := o.QueryTable(new(models.AdminLog)).
+	//查询所有订单列表
+	var list []*models.Order
+	//设置排序
+	qs := o.QueryTable(new(models.Order)).
 		OrderBy("-id").
 		Offset(c.GetPageOffset(pageNo, pageSize)).
 		Limit(pageSize)
-	//时间过滤
+
+	if phone != "" {
+		qs = qs.Filter("phone", phone)
+	}
+
+	if goods_id != "" {
+		qs = qs.Filter("goods_id", goods_id)
+	}
+
+	//筛选时间
 	if start_time != "" && end_time != "" {
 		qs = qs.Filter("created_time__gte", start_time).Filter("created_time__lte", end_time)
 	} else if start_time != "" {
@@ -34,20 +44,18 @@ func (c *AdminLogController) Index() {
 	} else if end_time != "" {
 		qs = qs.Filter("created_time__lte", end_time)
 	}
-	//用户名过滤
-	if keyword != "" {
-		qs = qs.Filter("username", keyword)
-	}
 
 	//总数
 	cnt, _ := qs.Count()
+	//数据列表
 	_, _ = qs.All(&list)
+	//处理分页
 	paginator := utils.PageUtil(int(cnt), pageSize, c.Ctx.Request.RequestURI, list)
-
 	c.Data["list"] = list
 	c.Data["paginator"] = paginator.ToString()
-	c.Data["keyword"] = keyword
+	c.Data["phone"] = phone
+	c.Data["goods_id"] = goods_id
 	c.Data["start_time"] = start_time
 	c.Data["end_time"] = end_time
-	c.SetTpl("admin_log/index.html")
+	c.SetTpl("order/index.html")
 }
