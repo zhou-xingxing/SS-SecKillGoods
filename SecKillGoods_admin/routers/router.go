@@ -6,9 +6,10 @@ import (
 )
 
 func init() {
+
 	beego.Router("/", &controllers.IndexController{})
 
-	ns := beego.NewNamespace("/admin",
+	ns1 := beego.NewNamespace("/admin",
 		// 后台主页面
 		beego.NSRouter("/", &controllers.IndexController{}, "*:Index"),
 		beego.NSRouter("/login", &controllers.IndexController{}, "*:Login"),
@@ -44,18 +45,26 @@ func init() {
 			beego.NSRouter("/destroy/:id", &controllers.GoodsController{}, "*:Destroy"),
 		),
 
-		//消费者
+		//客户管理
 		beego.NSNamespace("/customer",
 			beego.NSRouter("/", &controllers.CustomerController{}, "*:Index"),
 			beego.NSRouter("/add_page", &controllers.CustomerController{}, "*:AddPage"),
 			beego.NSRouter("/add", &controllers.CustomerController{}, "*:Add"),
 			beego.NSRouter("/destroy/:id", &controllers.CustomerController{}, "*:Destroy"),
 		),
-		//
-		//订单
+
+		//订单管理
 		beego.NSNamespace("/order",
 			beego.NSRouter("/", &controllers.OrderController{}, "*:Index"),
 		),
 	)
-	beego.AddNamespace(ns)
+
+	ns2 := beego.NewNamespace("/seckill",
+		beego.NSRouter("/", &controllers.SecKillController{}, "*:Index"),
+		//beego.NSRouter("/goods_page/:id", &controllers.SecKillController{}, "GoodsPage"),
+		//beego.NSRouter("/goods_seckill/:id", &controllers.SecKillController{}, "GoodsSeckill"),
+
+	)
+	beego.AddNamespace(ns1)
+	beego.AddNamespace(ns2)
 }
