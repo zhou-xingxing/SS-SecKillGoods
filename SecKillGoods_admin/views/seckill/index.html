@@ -33,7 +33,7 @@
                             <td>{{date .EndTime "Y-m-d H:i:s"}}</td>
                             <!--    开关风格-->
                             <td class="td-manage">
-                                <button id="goods_page" class="layui-btn layui-btn layui-btn-xs"  onclick="timecmp({{date .StartTime "Y-m-d H:i:s"}})" ><i class="layui-icon">&#xe642;</i>开始抢购</button>
+                                <button id="goods_page" class="layui-btn layui-btn layui-btn-xs"  onclick="timecmp({{date .StartTime "Y-m-d H:i:s"}},{{.Id}})" ><i class="layui-icon">&#xe642;</i>开始抢购</button>
                             </td>
 <!--                            xadmin.open('抢购页面','/seckill/goods_page/{{.Id}}',600,500)-->
                         </tr>
@@ -63,17 +63,17 @@
   //使用定时器每秒向div写入当前时间
     setInterval("getDate()",1000);
    //将当前时间与开始时间比较
-    function timecmp(start){
+    function timecmp(start,id){
         var curTime = new Date();
         //把字符串格式转化为日期类
         var starttime = new Date(start);
         console.log("%o",starttime);
         console.log("%o",(curTime>=starttime))
         if(curTime>=starttime){
-            xadmin.open('抢购页面','/seckill/goods_page/{{.Id}}',600,500);
+            xadmin.open('订单页面','/seckill/goods_page/'+id,600,500);
         }
         else{
-            alert("还未到秒杀开始时间")
+            alert("秒杀未开始")
         }
 
     }

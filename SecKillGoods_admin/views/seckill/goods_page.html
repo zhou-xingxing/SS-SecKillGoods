@@ -1,0 +1,106 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <label for="end_time" class="layui-form-label">
+                    秒杀截止时间
+                </label>
+                <div class="layui-input-inline">
+                    <input class="layui-input"  autocomplete="off"  name="end_time" id="end_time"  value="{{.end_time}}" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="goods_name" class="layui-form-label">
+                    商品名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="goods_name" name="goods_name"  value="{{.goods.GoodsName}} " disabled
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="goods_price" class="layui-form-label">
+                    商品价格
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="goods_price" name="goods_price"  value="{{.goods.GoodsPrice}}" disabled
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="goods_number" class="layui-form-label">
+                    当前剩余数量
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="goods_number" name="goods_number" value="{{.goods.GoodsNumber}}" disabled
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <hr class="layui-bg-green">
+        <h2>填写订单</h2>
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="goods_number" class="layui-form-label">
+                    <span class="x-red">*</span>手机号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text"  name="phone" required="" lay-verify="phone"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="goods_number" class="layui-form-label">
+                    <span class="x-red">*</span>抢购码
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text"  name="code" required="" lay-verify="code"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="end_time" class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="submit" lay-submit="">
+                    下单
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+        //自定义验证规则
+        form.verify({
+            code:[
+                /^[a-zA-Z0-9]+$/,
+                '抢购码格式错误'
+            ]
+        });
+        //监听提交
+        form.on('submit(submit)',
+            function(data) {
+                // console.log(data)
+                request_post("/seckill/goods_seckill/{{.goods.Id}}",data.field).then(function (data) {
+                    layer.alert("提交成功", {
+                            icon: 6
+                        },
+                        function() {
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            xadmin.father_reload();
+                        });
+                },function (error) {
+                    msg_error(error.msg)
+                })
+                return false;
+            });
+
+    });</script>

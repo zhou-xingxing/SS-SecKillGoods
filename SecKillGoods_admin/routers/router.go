@@ -61,8 +61,9 @@ func init() {
 
 	ns2 := beego.NewNamespace("/seckill",
 		beego.NSRouter("/", &controllers.SecKillController{}, "*:Index"),
-		//beego.NSRouter("/goods_page/:id", &controllers.SecKillController{}, "GoodsPage"),
-		//beego.NSRouter("/goods_seckill/:id", &controllers.SecKillController{}, "GoodsSeckill"),
+		beego.NSRouter("/goods_page/:id", &controllers.SecKillController{}, "*:GoodsPage"),
+		beego.NSRouter("/goods_seckill/:id", &controllers.SecKillController{}, "*:GoodsSeckill"),
+		//客户查询订单
 
 	)
 	beego.AddNamespace(ns1)
