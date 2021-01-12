@@ -4,7 +4,7 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <blockquote class="layui-elem-quote">
-                        <h3>欢迎您，现在的时间是</h3>
+                        <h3>欢迎您，您本机当前的时间是</h3>
                         <div id="times" class="x-red"></div>
 
                     </blockquote>
@@ -33,7 +33,7 @@
                             <td>{{date .EndTime "Y-m-d H:i:s"}}</td>
                             <!--    开关风格-->
                             <td class="td-manage">
-                                <button id="goods_page" class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('抢购页面','/seckill/goods_page/{{.Id}}',600,500)" ><i class="layui-icon">&#xe642;</i>开始抢购</button>
+                                <button id="goods_page" class="layui-btn layui-btn layui-btn-xs"  onclick="timecmp({{date .StartTime "Y-m-d H:i:s"}})" ><i class="layui-icon">&#xe642;</i>开始抢购</button>
                             </td>
 <!--                            xadmin.open('抢购页面','/seckill/goods_page/{{.Id}}',600,500)-->
                         </tr>
@@ -62,4 +62,19 @@
         }
   //使用定时器每秒向div写入当前时间
     setInterval("getDate()",1000);
+   //将当前时间与开始时间比较
+    function timecmp(start){
+        var curTime = new Date();
+        //把字符串格式转化为日期类
+        var starttime = new Date(start);
+        console.log("%o",starttime);
+        console.log("%o",(curTime>=starttime))
+        if(curTime>=starttime){
+            xadmin.open('抢购页面','/seckill/goods_page/{{.Id}}',600,500);
+        }
+        else{
+            alert("还未到秒杀开始时间")
+        }
+
+    }
  </script>
