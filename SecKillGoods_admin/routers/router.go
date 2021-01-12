@@ -64,7 +64,7 @@ func init() {
 		beego.NSRouter("/goods_page/:id", &controllers.SecKillController{}, "*:GoodsPage"),
 		beego.NSRouter("/goods_seckill/:id", &controllers.SecKillController{}, "*:GoodsSeckill"),
 		//客户查询订单
-
+		beego.NSRouter("/order", &controllers.SecKillController{}, "*:OrderList"),
 	)
 	beego.AddNamespace(ns1)
 	beego.AddNamespace(ns2)

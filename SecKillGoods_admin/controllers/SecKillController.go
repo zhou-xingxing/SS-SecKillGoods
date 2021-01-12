@@ -143,3 +143,56 @@ func (c *SecKillController) GoodsSeckill() {
 
 	c.ApiSuccess("操作成功", nil)
 }
+
+type OrderInfo struct {
+	Id          int
+	Phone       string
+	GoodsName   string
+	CreatedTime time.Time
+}
+
+//用户查询order
+func (c *SecKillController) OrderList() {
+	pageNo, _ := c.GetInt("page", 1)
+	pageSize := c.GetDefaultPageSize()
+	phone := c.GetString("phone", "")
+
+	o := orm.NewOrm()
+	//查询所有订单列表
+	var list []*models.Order
+	//设置排序
+	qs := o.QueryTable(new(models.Order)).
+		OrderBy("-id").
+		Offset(c.GetPageOffset(pageNo, pageSize)).
+		Limit(pageSize)
+
+	qs = qs.Filter("phone", phone)
+
+	//总数
+	cnt, _ := qs.Count()
+	//数据列表
+	_, _ = qs.All(&list)
+	//处理分页
+	paginator := utils.PageUtil(int(cnt), pageSize, c.Ctx.Request.RequestURI, list)
+
+	var info []OrderInfo
+	for _, v := range list {
+		var order OrderInfo
+		order.Id = v.Id
+		order.Phone = v.Phone
+		order.CreatedTime = v.CreatedTime
+
+		good := models.Goods{Id: v.GoodsId}
+		err := o.Read(&good)
+		if err != nil {
+			order.GoodsName = ""
+		} else {
+			order.GoodsName = good.GoodsName
+		}
+		info = append(info, order)
+	}
+	c.Data["info"] = info
+	c.Data["paginator"] = paginator.ToString()
+	c.Data["phone"] = phone
+	c.SetTpl("seckill/order.html")
+}

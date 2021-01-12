@@ -1,0 +1,47 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5" action="/seckill/order" method="get" >
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="phone"  placeholder="输入手机号查询" autocomplete="off" value="{{.phone}}" class="layui-input">
+                        </div>
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>订单ID</th>
+                            <th>用户手机号</th>
+                            <th>商品</th>
+                            <th>创建时间</th>
+                        </thead>
+                        <tbody>
+                        {{range .info}}
+                        <tr>
+                            <td>{{.Id}}</td>
+                            <td>{{.Phone}}</td>
+                            <td>{{.GoodsName}}</td>
+                            <td>{{date .CreatedTime "Y-m-d H:i:s"}}</td>
+                        </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    {{str2html .paginator}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
