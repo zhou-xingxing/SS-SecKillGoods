@@ -17,7 +17,8 @@ func main() {
 	//建表用的
 	//orm.RunCommand()
 	//main orm syncdb -force=false: drop tables before create
-
+	//初始化rabbitmq
+	sysinit.InitRabbitmq()
 	//过滤器，验证是否登录
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, sysinit.FilterLogin)
 	//过滤器，敏感操作加日志
