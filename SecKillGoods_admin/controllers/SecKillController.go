@@ -135,34 +135,6 @@ func (c *SecKillController) GoodsSeckill() {
 		c.ApiError("订单消息发送失败", nil)
 	}
 
-	//改商品数据+写订单
-	//if goods.GoodsNumber <= 0 {
-	//	log.Println("商品已被抢空")
-	//	c.ApiSuccess("操作成功", nil)
-	//}
-	//goods.GoodsNumber -= 1
-	//num, err := o.Update(&goods)
-	//if err == nil {
-	//	if num > 0 {
-	//		log.Println("商品表修改成功")
-	//	} else {
-	//		log.Println("商品表修改失败")
-	//		c.ApiSuccess("操作成功", nil)
-	//	}
-	//}
-	//order := models.Order{}
-	//order.Phone = phone
-	//order.GoodsId = id
-	//num, err = o.Insert(&order)
-	//if err == nil {
-	//	if num > 0 {
-	//		log.Println("订单表修改成功")
-	//	} else {
-	//		log.Println("订单表修改失败")
-	//		c.ApiSuccess("操作成功", nil)
-	//	}
-	//}
-	//c.ApiSuccess("操作成功", nil)
 }
 
 type OrderInfo struct {
