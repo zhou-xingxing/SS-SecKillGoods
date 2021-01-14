@@ -5,8 +5,10 @@ import (
 	"SecKillGoods_admin/sysinit"
 	"SecKillGoods_admin/utils"
 	"encoding/json"
+	"github.com/beego/beego/v2/client/cache"
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/validation"
+	"github.com/beego/beego/v2/server/web/captcha"
 	"log"
 	"regexp"
 	"time"
@@ -15,6 +17,18 @@ import (
 type SecKillController struct {
 	BaseController
 }
+
+//验证码
+func init() {
+	// use beego cache system store the captcha data
+	store := cache.NewMemoryCache()
+	cpt = captcha.NewWithFilter("/captcha/", store)
+	cpt.ChallengeNums = 4
+	cpt.StdWidth = 100
+	cpt.StdHeight = 50
+}
+
+var cpt *captcha.Captcha
 
 //可以秒杀的商品列表
 func (c *SecKillController) Index() {
@@ -75,6 +89,12 @@ type OrderToRabbitmq struct {
 
 //下订单
 func (c *SecKillController) GoodsSeckill() {
+	// 验证输入的验证码
+	cptVerify := cpt.VerifyReq(c.Ctx.Request)
+	if cptVerify == false {
+		c.ApiError("验证码错误，请点击刷新验证码重新提交", nil)
+	}
+
 	id, err := c.GetInt(":id")
 	if err != nil {
 		c.ApiError("获取商品id失败", nil)

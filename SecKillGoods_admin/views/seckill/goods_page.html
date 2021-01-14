@@ -62,6 +62,17 @@
             </div>
 
             <div class="layui-form-item">
+                <label for="goods_number" class="layui-form-label">
+                    <span class="x-red">*</span>验证码
+                </label>
+                {{create_captcha}}
+                <div class="layui-input-inline">
+                    <input type="text"  name="captcha" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label for="end_time" class="layui-form-label">
                 </label>
                 <button  class="layui-btn" lay-filter="submit" lay-submit="">
