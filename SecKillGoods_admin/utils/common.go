@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"math/rand"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -41,4 +42,31 @@ func RandString(len int) string {
 		bytes[i] = byte(b)
 	}
 	return string(bytes)
+}
+
+//验证密码
+func PasswordVerify(s string) bool {
+	//验证长度和不含特殊字符
+	pat1 := `^[a-zA-Z0-9]{8,16}$`
+	match1, _ := regexp.MatchString(pat1, s)
+	if !match1 {
+		return false
+	}
+	//同时包含大小写字母和数字
+	pat2 := `[0-9]+`
+	match2, _ := regexp.MatchString(pat2, s)
+	if !match2 {
+		return false
+	}
+	pat3 := `[a-z]+`
+	match3, _ := regexp.MatchString(pat3, s)
+	if !match3 {
+		return false
+	}
+	pat4 := `[A-Z]+`
+	match4, _ := regexp.MatchString(pat4, s)
+	if !match4 {
+		return false
+	}
+	return true
 }

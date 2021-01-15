@@ -43,9 +43,8 @@ func (c *IndexController) DoLogin() {
 	password := c.GetString("password")
 	//验证参数
 	pat1 := `^[a-zA-Z0-9_]{4,12}$`
-	pat2 := `^[a-zA-Z0-9_]{6,12}$`
 	match1, _ := regexp.MatchString(pat1, username)
-	match2, _ := regexp.MatchString(pat2, password)
+	match2 := utils.PasswordVerify(password)
 	if !match1 {
 		c.ApiError("用户名不符合规则", nil)
 	}
@@ -140,9 +139,8 @@ func (c *IndexController) Person() {
 		//密码为空说明没有修改密码
 		if pwd != "" {
 			repwd := c.GetString("repwd")
-			pat2 := `^[a-zA-Z0-9_]{6,12}$`
-			match2, _ := regexp.MatchString(pat2, pwd)
-			if !match2 {
+			match := utils.PasswordVerify(pwd)
+			if !match {
 				c.ApiError("密码不符合规则", nil)
 			}
 			if pwd != repwd {

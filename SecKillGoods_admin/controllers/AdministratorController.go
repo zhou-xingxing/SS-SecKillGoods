@@ -99,9 +99,8 @@ func (c *AdministratorController) Add() {
 	repwd := c.GetString("repwd")
 	//用户名和密码验证
 	pat1 := `^[a-zA-Z0-9_]{4,12}$`
-	pat2 := `^[a-zA-Z0-9_]{6,12}$`
 	match1, _ := regexp.MatchString(pat1, adminUser.Username)
-	match2, _ := regexp.MatchString(pat2, adminUser.Password)
+	match2 := utils.PasswordVerify(adminUser.Password)
 	if !match1 {
 		c.ApiError("用户名不符合规则", nil)
 	}
@@ -206,9 +205,8 @@ func (c *AdministratorController) Update() {
 	pwd := c.GetString("pwd")
 	if pwd != "" {
 		repwd := c.GetString("repwd")
-		pat2 := `^[a-zA-Z0-9_]{6,12}$`
-		match2, _ := regexp.MatchString(pat2, pwd)
-		if !match2 {
+		match := utils.PasswordVerify(pwd)
+		if !match {
 			c.ApiError("密码不符合规则", nil)
 		}
 		if repwd != pwd {

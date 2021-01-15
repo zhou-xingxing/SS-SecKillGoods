@@ -51,11 +51,11 @@
                     密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pwd" required="" lay-verify=""
+                    <input type="password" id="L_pass" name="pwd" required="" lay-verify="required"
                            autocomplete="off" class="layui-input" placeholder="为空则不修改密码"  >
                 </div>
                 <div class="layui-form-mid layui-word-aux">
-                    6到12个字符，且只能包含字母、数字、下划线
+                    8到16个字符，且须同时包含大小写字母和数字
                 </div>
             </div>
             <div class="layui-form-item">
@@ -63,7 +63,7 @@
                     确认密码
                 </label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repwd" required="" lay-verify=""
+                    <input type="password" id="L_repass" name="repwd" required="" lay-verify="required"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
